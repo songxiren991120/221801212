@@ -4,7 +4,18 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+
 using namespace std;
+string duan="";
+struct Record {
+    string word;
+    int count;
+};
+static bool sortType(const Record& v1, const Record& v2)
+{
+    return v1.count > v2.count;
+}
+
 int wordtest(char a)
 {
     return ((a >= 'a' && a <= 'z') || (a >= 'A' && a <= 'Z'));
@@ -22,18 +33,23 @@ void readText(const char* filename) {
         ifile.getline(para, 99);
         i = 0;
         while (para[i]!='\0') {
-            i++;
             character++;
+            
+            
             while (wordtest(para[i]))
             {
+                duan = duan + para[i];
                 i++;
-                character++;
+                
                 if (!wordtest(para[i]))
                 {
                     wordcount++;
-                    
+                    duan += " ";
                 }
             }
+            
+            i++;
+            
         }
 
     }
@@ -41,6 +57,35 @@ void readText(const char* filename) {
     cout << "字符数：" << character << endl;
     cout << "单词数：" << wordcount << endl;
     cout << "行数：" << line-1 << endl;
+    cout << duan<<endl;
+}
+void wordDis(){
+    vector<Record> _words;
+    istringstream iss(duan);
+    string word;
+    int i;
+    while (iss >> word) 
+    {
+        for (i = 0; i < _words.size(); ++i) {
+            if (word == _words[i].word)
+            {
+                ++_words[i].count;
+                break;
+            }
+        }
+        if (i == _words.size()) {
+            Record record;
+            record.word = word;
+            record.count = 1;
+            _words.push_back(record);
+        }
+    }
+
+    sort(_words.begin(), _words.end(), sortType);
+    for (i = 0; i < 10; ++i) {
+        cout << _words[i].word << _words[i].count<<endl;
+    }
+
 }
 int main(int argc, char** argv)
 {
@@ -52,4 +97,5 @@ int main(int argc, char** argv)
     }
     const char* address2 = address1.data();
     readText(address2);
+    wordDis();
 }
