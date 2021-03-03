@@ -7,7 +7,7 @@
 using namespace std;
 int wordtest(char a)
 {
-    return ((a >= 'a' && a <= 'z') || (a >= 'A' && a <= 'Z') || (a >= '0' && a <= '9'));
+    return ((a >= 'a' && a <= 'z') || (a >= 'A' && a <= 'Z'));
 }
 void readText(const char* filename) {
     ifstream ifile(filename);
@@ -31,7 +31,7 @@ void readText(const char* filename) {
                 if (!wordtest(para[i]))
                 {
                     wordcount++;
-                    character++;
+                    
                 }
             }
         }
