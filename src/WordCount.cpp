@@ -9,7 +9,8 @@ string duan="";
 int wordcount = 0;
 int line = 0;
 int character = 0;
-struct Record {
+struct Record 
+{
     string word;
     int count;
 };
@@ -18,39 +19,50 @@ static bool sortType(const Record& v1, const Record& v2)
     return v1.count > v2.count;//降序排序
 }
 
-int wordtest(char a)
+int wordTest(char a)
 {
     return ((a >= 'a' && a <= 'z') || (a >= 'A' && a <= 'Z'));
 }
-void readText(const char* filename) {
+void readText(const char* filename) 
+{
     ifstream ifile(filename);
+    if (!ifile.good())//打开不正常
+    {
+        cout << "ifstream open file error" << endl;
+        return;
+    }
+
     char para[10000];
     int i;
     int j = 0;
     
-    while (!ifile.eof()) {
+    while (!ifile.eof()) 
+    {
         line++;
         ifile.getline(para, 10000);
         i = 0;
-        while (para[i]!='\0') {
+        while (para[i]!='\0') 
+        {
 
             //if (para[i] == ' ') {
               //  character++;
             //}
             
             
-            while (wordtest(para[i]))
+            while (wordTest(para[i]))
             {
                 character++;
                 //duan = duan + para[i];
                 i++;
                 j++;
                 
-                if (!wordtest(para[i]))
+                if (!wordTest(para[i]))
                 {
-                    if (j >= 4) {
+                    if (j >= 4) 
+                    {
                         wordcount++;
-                        for (int h = i - j; h < i; h++) {
+                        for (int h = i - j; h < i; h++) 
+                        {
                             duan = duan + para[h];
                         }
                         duan += " ";
@@ -68,21 +80,24 @@ void readText(const char* filename) {
     ifile.close();
     
 }
-void wordDis(){
+void wordDis()
+{
     vector<Record> _words;
     istringstream iss(duan);
     string word;
     int i;
     while (iss >> word) 
     {
-        for (i = 0; i < _words.size(); ++i) {
+        for (i = 0; i < _words.size(); ++i) 
+        {
             if (word == _words[i].word)
             {
                 ++_words[i].count;
                 break;
             }
         }
-        if (i == _words.size()) {
+        if (i == _words.size()) 
+        {
             Record record;
             record.word = word;
             record.count = 1;
@@ -91,43 +106,53 @@ void wordDis(){
     }
 
     sort(_words.begin(), _words.end(), sortType);//排序并输出
-    for (i = 0; i < _words.size(); ++i) {
+    for (i = 0; i < _words.size(); ++i) 
+    {
         cout << _words[i].word << ":"<<_words[i].count<<endl;
     }
 
 }
-void writeFile(const char* filename) {
-    ofstream ofs(filename);
+void writeFile(const char* filename) 
+{
+    ofstream ofile(filename);
+    if (!ofile.good())
+    {
+        cout << "输出文件打开失败" << endl;
+        return;
+    }
+
     vector<Record> _words;
     istringstream iss(duan);
     string word;
     int i;
     while (iss >> word)
     {
-        for (i = 0; i < _words.size(); ++i) {
+        for (i = 0; i < _words.size(); ++i) 
+        {
             if (word == _words[i].word)
             {
                 ++_words[i].count;
                 break;
             }
         }
-        if (i == _words.size()) {
+        if (i == _words.size()) 
+        {
             Record record;
             record.word = word;
             record.count = 1;
             _words.push_back(record);
         }
     }
-    ofs << "字符数：" << character << endl;
-    ofs << "单词数：" << wordcount << endl;
-    ofs << "行数：" << line - 1 << endl;
+    ofile << "字符数：" << character << endl;
+    ofile << "单词数：" << wordcount << endl;
+    ofile << "行数：" << line - 1 << endl;
     cout << duan << endl;
     sort(_words.begin(), _words.end(), sortType);//排序并输出
     for (int i = 0; i < _words.size(); ++i)
     {
-        ofs << _words[i].word << " " << _words[i].count << endl;
+        ofile << _words[i].word << " " << _words[i].count << endl;
     }
-    ofs.close();
+    ofile.close();
 }
 int main(int argc, char** argv)
 {
