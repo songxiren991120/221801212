@@ -33,12 +33,16 @@ void readText(const char* filename) {
         ifile.getline(para, 10000);
         i = 0;
         while (para[i]!='\0') {
-            character++;
+
+            //if (para[i] == ' ') {
+              //  character++;
+            //}
             
             
             while (wordtest(para[i]))
             {
-                duan = duan + para[i];
+                character++;
+                //duan = duan + para[i];
                 i++;
                 j++;
                 
@@ -46,6 +50,9 @@ void readText(const char* filename) {
                 {
                     if (j >= 4) {
                         wordcount++;
+                        for (int h = i - j-1; h < i; h++) {
+                            duan = duan + para[h];
+                        }
                         duan += " ";
                         j = 0;
                     }
@@ -84,8 +91,8 @@ void wordDis(){
     }
 
     sort(_words.begin(), _words.end(), sortType);//排序并输出
-    for (i = 0; i < 10; ++i) {
-        cout << _words[i].word << _words[i].count<<endl;
+    for (i = 0; i < _words.size(); ++i) {
+        cout << _words[i].word << ":"<<_words[i].count<<endl;
     }
 
 }
@@ -114,9 +121,9 @@ void writeFile(const char* filename) {
     ofs << "字符数：" << character << endl;
     ofs << "单词数：" << wordcount << endl;
     ofs << "行数：" << line - 1 << endl;
-    //cout << duan << endl;
+    cout << duan << endl;
     sort(_words.begin(), _words.end(), sortType);//排序并输出
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < _words.size(); ++i)
     {
         ofs << _words[i].word << " " << _words[i].count << endl;
     }
@@ -140,5 +147,5 @@ int main(int argc, char** argv)
     const char* out_address2 = out_address1.data();
     readText(in_address2);
     writeFile(out_address2);
-    //wordDis();
+    wordDis();
 }
