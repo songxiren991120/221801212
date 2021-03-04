@@ -50,13 +50,13 @@ void readText(const char* filename) {
                 {
                     if (j >= 4) {
                         wordcount++;
-                        for (int h = i - j-1; h < i; h++) {
+                        for (int h = i - j; h < i; h++) {
                             duan = duan + para[h];
                         }
                         duan += " ";
-                        j = 0;
+                      
                     }
-                    
+                    j = 0;
                 }
             }
             
