@@ -4,7 +4,6 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
 using namespace std;
 string duan="";
 struct Record {
@@ -13,7 +12,7 @@ struct Record {
 };
 static bool sortType(const Record& v1, const Record& v2)
 {
-    return v1.count > v2.count;
+    return v1.count > v2.count;//降序排序
 }
 
 int wordtest(char a)
@@ -22,15 +21,16 @@ int wordtest(char a)
 }
 void readText(const char* filename) {
     ifstream ifile(filename);
-    char para[100];
+    char para[10000];
     int wordcount = 0;
     int linecount = 0;
     int i;
+    int j = 0;
     int character=0;
     int line = 0;
     while (!ifile.eof()) {
         line++;
-        ifile.getline(para, 99);
+        ifile.getline(para, 10000);
         i = 0;
         while (para[i]!='\0') {
             character++;
@@ -40,11 +40,16 @@ void readText(const char* filename) {
             {
                 duan = duan + para[i];
                 i++;
+                j++;
                 
                 if (!wordtest(para[i]))
                 {
-                    wordcount++;
-                    duan += " ";
+                    if (j >= 4) {
+                        wordcount++;
+                        duan += " ";
+                        j = 0;
+                    }
+                    
                 }
             }
             
@@ -56,7 +61,7 @@ void readText(const char* filename) {
     ifile.close();
     cout << "字符数：" << character << endl;
     cout << "单词数：" << wordcount << endl;
-    cout << "行数：" << line-1 << endl;
+    cout << "行数：" << line-1<< endl;
     cout << duan<<endl;
 }
 void wordDis(){
@@ -81,7 +86,7 @@ void wordDis(){
         }
     }
 
-    sort(_words.begin(), _words.end(), sortType);
+    sort(_words.begin(), _words.end(), sortType);//排序并输出
     for (i = 0; i < 10; ++i) {
         cout << _words[i].word << _words[i].count<<endl;
     }
@@ -90,11 +95,11 @@ void wordDis(){
 int main(int argc, char** argv)
 {
     string address1 = argv[1];
-    ifstream ifile(address1);
-    string s = "";
-    while (getline(ifile, s)) {
-        cout << s << endl;
-    }
+    //ifstream ifile(address1);
+    //string s = "";
+    //while (getline(ifile, s)) {
+    //    cout << s << endl;
+    //}
     const char* address2 = address1.data();
     readText(address2);
     wordDis();
